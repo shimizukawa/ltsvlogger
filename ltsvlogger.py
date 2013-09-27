@@ -28,7 +28,7 @@ ltz = LocalTimeZone()
 
 class LTSVFormatter(logging.Formatter):
 
-    _default_fields = {
+    default_fields = {
         'asctime': 'time',
         'levelname': 'log_level',
         'message': 'message',
@@ -39,20 +39,20 @@ class LTSVFormatter(logging.Formatter):
         'threadName': 'thread_name',
     }
 
-    _default_datefmt = '%Y-%m-%dT%H:%M:%S%z'
+    default_datefmt = '%Y-%m-%dT%H:%M:%S%z'
 
     def __init__(self, fmt=None, datefmt=None, fields=None):
         if fields is None:
-            fields = self._default_fields
+            fields = self.default_fields
         if fmt is None:
             fmt = '\t'.join('{1}:%({0})s'.format(*i) for i in fields.items())
         if datefmt is None:
-            datefmt = self._default_datefmt
+            datefmt = self.default_datefmt
         logging.Formatter.__init__(self, fmt=fmt, datefmt=datefmt)
 
     def formatTime(self, record, datefmt=None):
         if datefmt is None:
-            datefmt = self._default_datefmt
+            datefmt = self.default_datefmt
 
         dt = datetime.datetime.fromtimestamp(time.time(), ltz)
 
@@ -83,12 +83,22 @@ class LTSVLoggerAdapter(logging.LoggerAdapter):
 
 
 def example_logger_setup_by_code():
-    logger = logging.getLogger('sample')
+    formatter = LTSVFormatter(fields={
+        'asctime': 'time',
+        'user': 'user',
+        'host': 'host',
+        'message': 'message',
+    })
+
+    logger = logging.getLogger('code')
     hdr = logging.StreamHandler()
     hdr.setLevel(logging.INFO)
-    hdr.setFormatter(LTSVFormatter())
+    hdr.setFormatter(formatter)
     logger.addHandler(hdr)
 
+    # extra keyword argument values fill into format string placeholder.
+    # If formatter did not have 'user' and host' placeholder, these
+    # values will be simply omitted.
     logger.error(
         'This is a error message with %s',
         'extra arguments',
@@ -98,13 +108,24 @@ def example_logger_setup_by_code():
         )
     )
 
+
+def example_logger_setup_by_code_with_adapter():
+    formatter = LTSVFormatter()
+
+    logger = logging.getLogger('adapter')
+    hdr = logging.StreamHandler()
+    hdr.setLevel(logging.INFO)
+    hdr.setFormatter(formatter)
+    logger.addHandler(hdr)
+
+    # LTSVLoggerAdapter will extract keyword argument into log format.
     ltsvlogger = LTSVLoggerAdapter(logger)
 
-    ltsvlogger.warning(
-        'This is a warning message with %s',
-        'keyword arguments',
-        user='spam',
-        host='ham.example.com',
+    ltsvlogger.error(
+        'This is a error message with %s',
+        'extra arguments',
+         user='spam',
+         host='ham.example.com',
     )
 
 
@@ -145,15 +166,6 @@ def example_logger_setup_by_config():
     logging.config.fileConfig('logger.ini')
     logger = logging.getLogger('demo')
 
-    logger.error(
-        'This is a error message with %s',
-        'extra arguments',
-        extra=dict(
-            user='spam',
-            host='ham.example.com',
-        )
-    )
-
     ltsvlogger = LTSVLoggerAdapter(logger)
 
     ltsvlogger.warning(
@@ -166,4 +178,5 @@ def example_logger_setup_by_config():
 
 if __name__ == '__main__':
     example_logger_setup_by_code()
+    example_logger_setup_by_code_with_adapter()
     example_logger_setup_by_config()
