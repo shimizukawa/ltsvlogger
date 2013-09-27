@@ -11,7 +11,7 @@ Basic Features
 Requirements
 -------------
 
-- Python 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, pypy.
+- Python 2.6, 2.7, 3.2, 3.3, pypy.
 
 
 Installation
