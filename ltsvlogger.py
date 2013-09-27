@@ -124,8 +124,8 @@ def example_logger_setup_by_code_with_adapter():
     ltsvlogger.error(
         'This is a error message with %s',
         'extra arguments',
-         user='spam',
-         host='ham.example.com',
+        user='spam',
+        host='ham.example.com',
     )
 
 
