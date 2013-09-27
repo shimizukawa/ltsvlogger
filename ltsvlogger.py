@@ -58,7 +58,7 @@ class LTSVFormatter(logging.Formatter):
 
         if '%z' in datefmt:
             z = dt.strftime('%z')
-            datefmt = datefmt.replace('%z', '{}:{}'.format(z[:-2], z[-2:]))
+            datefmt = datefmt.replace('%z', '{0}:{1}'.format(z[:-2], z[-2:]))
 
         return dt.strftime(datefmt)
 
@@ -74,9 +74,9 @@ class LTSVLoggerAdapter(logging.LoggerAdapter):
             if kw in kwargs:
                 new_kwargs[kw] = kwargs.pop(kw)
 
-        new_msg = '{}\t{}'.format(
+        new_msg = '{0}\t{1}'.format(
             msg,
-            '\t'.join('{}:{}'.format(*i) for i in kwargs.items()),
+            '\t'.join('{0}:{1}'.format(*i) for i in kwargs.items()),
         )
 
         return new_msg, new_kwargs
