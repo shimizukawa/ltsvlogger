@@ -162,7 +162,7 @@ output sample::
 CHANGES
 ========
 
-0.9.0 (unreleased)
+0.9.0 (2013-10-02)
 ------------------
 First release.
 
