@@ -6,7 +6,7 @@ Basic Features
 ===============
 
 * Provide ltsvlogger.LTSVFormatter to format ltsv output.
-* Provide ltsvlogger.LTSFLoggerAdapter for ease to use.
+* Provide ltsvlogger.LTSVLoggerAdapter for ease to use.
 
 Requirements
 -------------
@@ -34,7 +34,7 @@ setup logger by code
 ::
 
    import logging
-   import ltsvlogger
+   from ltsvlogger import LTSVFormatter, LTSVLoggerAdapter
 
    formatter = LTSVFormatter(fields={
        'asctime': 'time',
@@ -79,7 +79,7 @@ setup logger by code with LTSVLoggerAdapter
 ::
 
    import logging
-   import ltsvlogger
+   from ltsvlogger import LTSVFormatter, LTSVLoggerAdapter
 
    formatter = LTSVFormatter()
 
