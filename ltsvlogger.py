@@ -129,6 +129,23 @@ def example_logger_setup_by_code_with_adapter():
     )
 
 
+def example_logger_setup_by_code_with_adapter_no_kwargs():
+    formatter = LTSVFormatter()
+
+    logger = logging.getLogger('adapter_no_kwargs')
+    hdr = logging.StreamHandler()
+    hdr.setLevel(logging.INFO)
+    hdr.setFormatter(formatter)
+    logger.addHandler(hdr)
+
+    # LTSVLoggerAdapter will extract keyword argument into log format.
+    ltsvlogger = LTSVLoggerAdapter(logger)
+
+    ltsvlogger.error(
+        'This is a error message without extra arguments'
+    )
+
+
 def example_logger_setup_by_config():
     """
     logger.ini example::
@@ -179,4 +196,5 @@ def example_logger_setup_by_config():
 if __name__ == '__main__':
     example_logger_setup_by_code()
     example_logger_setup_by_code_with_adapter()
+    example_logger_setup_by_code_with_adapter_no_kwargs()
     example_logger_setup_by_config()
