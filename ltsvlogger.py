@@ -73,12 +73,13 @@ class LTSVLoggerAdapter(logging.LoggerAdapter):
         for kw in ('exc_info', 'extra'):
             if kw in kwargs:
                 new_kwargs[kw] = kwargs.pop(kw)
-
-        new_msg = '{0}\t{1}'.format(
-            msg,
-            '\t'.join('{0}:{1}'.format(*i) for i in kwargs.items()),
-        )
-
+        if kwargs:
+            new_msg = '{0}\t{1}'.format(
+                msg,
+                '\t'.join('{0}:{1}'.format(*i) for i in kwargs.items()),
+            )
+        else:
+            new_msg = msg
         return new_msg, new_kwargs
 
 
