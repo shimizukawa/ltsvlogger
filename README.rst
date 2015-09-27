@@ -162,10 +162,19 @@ output sample::
 CHANGES
 ========
 
+0.9.1 (2015-09-28)
+------------------
+Bug fixes.
+
+* PR#1. Fix typo. Thanks to WAKAYAMA shirou.
+* PR#2. Fix: remove redundant tab when no extra kwargs is passed. Thanks to
+  Toshiya Kawasaki.
+
+
 0.9.0 (2013-10-02)
 ------------------
 First release.
 
 * Provide ltsvlogger.LTSVFormatter
-* Provide ltsvlogger.LTSFLoggerAdapter
+* Provide ltsvlogger.LTSVLoggerAdapter
 
