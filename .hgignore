@@ -1,0 +1,5 @@
+syntax: glob
+.tox
+__pycache__
+*.pyc
+*.egg-info
