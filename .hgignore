@@ -1,5 +1,7 @@
 syntax: glob
 .tox
 __pycache__
+dist
+_build
 *.pyc
 *.egg-info
