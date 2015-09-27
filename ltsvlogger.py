@@ -73,12 +73,13 @@ class LTSVLoggerAdapter(logging.LoggerAdapter):
         for kw in ('exc_info', 'extra'):
             if kw in kwargs:
                 new_kwargs[kw] = kwargs.pop(kw)
-
-        new_msg = '{0}\t{1}'.format(
-            msg,
-            '\t'.join('{0}:{1}'.format(*i) for i in kwargs.items()),
-        )
-
+        if kwargs:
+            new_msg = '{0}\t{1}'.format(
+                msg,
+                '\t'.join('{0}:{1}'.format(*i) for i in kwargs.items()),
+            )
+        else:
+            new_msg = msg
         return new_msg, new_kwargs
 
 
@@ -126,6 +127,23 @@ def example_logger_setup_by_code_with_adapter():
         'extra arguments',
         user='spam',
         host='ham.example.com',
+    )
+
+
+def example_logger_setup_by_code_with_adapter_no_kwargs():
+    formatter = LTSVFormatter()
+
+    logger = logging.getLogger('adapter_no_kwargs')
+    hdr = logging.StreamHandler()
+    hdr.setLevel(logging.INFO)
+    hdr.setFormatter(formatter)
+    logger.addHandler(hdr)
+
+    # LTSVLoggerAdapter will extract keyword argument into log format.
+    ltsvlogger = LTSVLoggerAdapter(logger)
+
+    ltsvlogger.error(
+        'This is a error message without extra arguments'
     )
 
 
@@ -179,4 +197,5 @@ def example_logger_setup_by_config():
 if __name__ == '__main__':
     example_logger_setup_by_code()
     example_logger_setup_by_code_with_adapter()
+    example_logger_setup_by_code_with_adapter_no_kwargs()
     example_logger_setup_by_config()
